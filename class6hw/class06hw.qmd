@@ -1,0 +1,112 @@
+---
+title: "class 6 : homework"
+author: "Jimmi Nguyen"
+format: pdf
+---
+
+```{r}
+# Can you improve this analysis code?
+library(bio3d)
+s1 <- read.pdb("4AKE") # kinase with drug
+s2 <- read.pdb("1AKE") # kinase no drug
+s3 <- read.pdb("1E4Y") # kinase with drug
+s1.chainA <- trim.pdb(s1, chain="A", elety="CA")
+s2.chainA <- trim.pdb(s2, chain="A", elety="CA")
+s3.chainA <- trim.pdb(s3, chain="A", elety="CA")
+s1.b <- s1.chainA$atom$b
+s2.b <- s2.chainA$atom$b
+s3.b <- s3.chainA$atom$b
+plotb3(s1.b, sse=s1.chainA, typ="l", ylab="Bfactor")
+plotb3(s2.b, sse=s2.chainA, typ="l", ylab="Bfactor")
+plotb3(s3.b, sse=s3.chainA, typ="l", ylab="Bfactor")
+```
+
+>Q1. What type of object is returned from the read.pdb() function? 
+
+```{r}
+typeof(s1)
+```
+`read.pdb()` returns a list object type of class pdb.
+
+>Q2. What does the trim.pdb() function do?
+
+The `trim.pdb()` function creates smaller pdb object containing a subset atoms from the original object.
+
+>Q3. What input parameter would turn off the marginal black and grey rectangles in the plots and what do they represent in this case?
+
+The input parameters `top=FALSE, bot=FALSE` in the `plotb3()` function will remove the rectangles.
+
+```{r}
+plotb3(s1.b, sse=s1.chainA, typ="l", ylab="Bfactor", top=FALSE, bot=FALSE)
+```
+
+>Q4. What would be a better plot to compare across the different proteins?
+
+A better plot to compare would be the use of Dendrograms which would visualize cluster analysis across the different proteins.
+
+>Q5. Which proteins are more similar to each other in their B-factor trends. How could you quantify this?
+
+Proteins *1AKE* and *1E4Y* were found to be more similar in B-factor trends.
+To quantify this, I had created a Dendrogram using the `hclust`,`dist`, and `rbind` functions and ploting their results.
+
+```{r}
+hc <- hclust( dist( rbind(s1.b, s2.b, s3.b) ) )
+plot(hc)
+```
+
+> Q6. How would you generalize the original code above to work with any set of input protein structures?
+
+must load bio3d package using `install.packages("bio3d")` then call it using the `library()` function.
+
+```{r}
+library(bio3d)
+  #Input to function is the character name of the protein of interest
+ProteinPlot = function(protein){
+  #will read and obtain protein from pdb database
+  x = read.pdb(protein)
+  #obtains and stores subset of atoms in Alpha chain from protein
+  x.chainA = trim.pdb(x, chain="A", elety="CA")
+  #obtains and stores b atoms from protein
+  x.b = x.chainA$atom$b
+  #plots protein line graphs with residues versus b-factor
+  plotb3(x.b, sse=x.chainA, typ="l", ylab="Bfactor")
+}
+```
+
+To use function, call it using `ProteinPlot()` and inputing the protein name as the input argument such as **"4AKE"**, **"1AKE"**, and **"1E4Y"**.
+`ProteinPlot()` will output a line plot of the protein with with residues versus b-factor
+
+```{r}
+ProteinPlot("4AKE")
+ProteinPlot("1AKE")
+ProteinPlot("1E4Y")
+```
+
+
+```{r}
+#library(ggplot2)
+#ggplot(mtcars)+
+  #aes(x=mpg,y=disp)+
+  #geom_point()
+
+#ggplot(mtcars,aes(mpg,disp))+
+ # geom_point()
+
+v=c(10,5,NA)
+v
+#sum(is.na(v))
+mean(v,na.rm=TRUE)
+mean(na.omit(v))
+#mean(v)
+#mean(is.na(v))
+
+```
+
+```{r}
+ncol(df)
+nrow(df)
+dim(df)
+```
+
+
+
