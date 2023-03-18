@@ -1,0 +1,35 @@
+---
+title: "hw6 function"
+author: "Jimmi Nguyen"
+date: "2023-01-30"
+output: pdf_document
+---
+
+> Q6. How would you generalize the original code above to work with any set of input protein structures?
+
+must load bio3d package using `install.packages("bio3d")` then call it using the `library()` function.
+
+```{r}
+library(bio3d)
+  #Input to function is the character name of the protein of interest
+ProteinPlot = function(protein){
+  #will read and obtain protein from pdb database
+  x = read.pdb(protein)
+  #obtains and stores subset of atoms in Alpha chain from protein
+  x.chainA = trim.pdb(x, chain="A", elety="CA")
+  #obtains and stores b atoms from protein
+  x.b = x.chainA$atom$b
+  #plots protein line graphs with residues versus b-factor
+  plotb3(x.b, sse=x.chainA, typ="l", ylab="Bfactor")
+}
+```
+
+To use function, call it using `ProteinPlot()` and inputing the protein name as the input argument such as **"4AKE"**, **"1AKE"**, and **"1E4Y"**.
+`ProteinPlot()` will output a line plot of the protein with with residues versus b-factor
+
+```{r}
+ProteinPlot("4AKE")
+ProteinPlot("1AKE")
+ProteinPlot("1E4Y")
+```
+
