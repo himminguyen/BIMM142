@@ -1,0 +1,39 @@
+---
+title: "class 14"
+author: "jimmi"
+format: html
+---
+
+Once you’ve signed up, you’ll need to enable RStudio to talk to GitHub. The process for doing so has recently changed. The best way to connect RStudio and GitHub is using your username and a Personal Access Token (PAT).
+
+To generate a personal access token, use the create_github_token() function from usethis. This will take you to the appropriate page on the GitHub website, where you’ll give your token a name and copy it (don’t lose it because it will never appear again!). To do this, go to RStudio and type
+
+```{r}
+#install.packages("usethis")
+library(usethis)
+#create_github_token()
+#token = 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
+```
+
+Now that you’ve created a Personal Access Token, we need to store it so that RStudio can access it and know to connect to your GitHub account. The gitcreds_set() function from the gitcreds package will help you here.
+
+```{r}
+#install.packages("gitcreds")
+library(gitcreds)
+credentials::set_github_pat("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")
+usethis::use_git_config(user.name = "himminguyen", user.email = "jin003@ucsd.edu")
+gitcreds::gitcreds_get()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
