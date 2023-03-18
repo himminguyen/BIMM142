@@ -1,6 +1,3 @@
 # BIMM143
 Bioinformatics Lab
 
-theme: jekyll-theme-minimal
-logo: https://bioboot.github.io/bimm143_F18/assets/img/logo.png
-title: Jimmi's Bioinformatics class (BIMM143, Winter 2023
