@@ -1,0 +1,66 @@
+---
+title: "HW Class 11 Pt.2 (Population analysis) [Extra Credit BoxPlot]"
+author: "Jimmi"
+format: pdf
+---
+
+# Population Analysis
+
+>Q13: Read this file into R and determine the sample size for each genotype and their corresponding median expression levels for each of these genotypes.
+
+Let's read data and store it into a dataframe.
+
+```{r}
+gene <- read.table(file='rs8067378_ENSG00000172057.6.txt', header=TRUE)
+head(gene)
+```
+
+Identifying how many samples have a specific genotype.
+
+```{r}
+genotypes = table(gene$geno)
+genotypes
+```
+
+We can find useful data with the `summary()` function and specifically get the median by using the built in R `median()` function.
+
+```{r}
+summary( gene$exp[gene$geno == "A/A"] )
+summary( gene$exp[gene$geno == "A/G"] )
+summary( gene$exp[gene$geno == "G/G"] )
+
+median(gene$exp[gene$geno == "A/A"])
+median(gene$exp[gene$geno == "A/G"])
+median(gene$exp[gene$geno == "G/G"])
+```
+
+The sample size for A/A is `r genotypes[1]` with an `r median(gene$exp[gene$geno == "A/A"])` median expression level.
+
+The sample size for A/G is `r genotypes[2]` with an `r median(gene$exp[gene$geno == "A/G"])` median expression level.
+
+The sample size for G/G is `r genotypes[3]` with an `r median(gene$exp[gene$geno == "G/G"])` median expression level.
+
+>Q14: Generate a boxplot with a box per genotype, what could you infer from the relative expression value between A/A and G/G displayed in this plot? Does the SNP effect the expression of ORMDL3?
+
+Turning genotypes are factors before loading up ggplot to make a boxplot.
+
+```{r}
+gene$geno = as.factor(gene$geno)
+head(gene)
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(gene, aes(x=geno, y=exp,fill=geno)) + 
+  geom_boxplot(notch=TRUE) +
+  geom_jitter(alpha=0.25, fill="black",width = 0.2) + 
+  theme(legend.position="right",
+        plot.title = element_text(size=11)) +
+  labs(x="Genotype", y = "Expression")
+```
+
+We can infer that A/A is incurs the most expression of ORMDL3 and dominant while G/G seen in underexpressed ORMDL3 and recessive. The SNP loci appears to have an effect on the ORMDL3 gene, however, there are obvious variable ranges between each genotypes. Therefor, without a statistical significance test it is not certain.
+
+
+

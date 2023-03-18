@@ -1,0 +1,2 @@
+"0","gene <- read.table(file='rs8067378_ENSG00000172057.6.txt', header=TRUE)"
+"0","head(gene)"

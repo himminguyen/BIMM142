@@ -1,0 +1,191 @@
+---
+title: "Class 5: Data Visualization"
+author: "Jimmi"
+format: pdf
+---
+
+# Plotting in R
+
+R has multiple plotting and graphic systems. The most popular of which is **ggplot2**
+
+We have already played with "base" R graphics. This come along with R "out of the box".
+
+```{r}
+plot(cars)
+```
+
+Compared to base R plots ggplot is much more verbose - need to write more code to get simple plots like the above.
+
+To use ggplot I need to first install the ggplot2 package. To install any package in R I use the `install.package()` command along with the package name.
+
+The install is a one time only requiredment. The package is now on our computer. I don't need to re-install it.
+
+However, I can't just use it wihtout loading it up with a `library()` call.
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+ggplot(cars)
+```
+
+All ggplot figures need at least 3 things:
+
+-data (this is the data.frame with our numbers)
+-aesthetics ("aes", how our data maps to the plot)
+-geoms (do you want lines, points, columns, etc...)
+
+```{r}
+ggplot(data=cars) +
+  aes(x=speed, y=dist) +
+  geom_point()
+```
+
+I want a trend line to show the relationship between speed and distance
+
+```{r}
+ggplot(data=cars) +
+  aes(x=speed, y=dist) +
+  geom_point() +
+  geom_line()
+```
+
+This is not what we want.
+
+
+```{r}
+bb <- ggplot(data=cars) +
+  aes(x=speed, y=dist) +
+  geom_point() +
+  geom_smooth()
+
+bb
+```
+
+```{r}
+bb + geom_smooth(method = "lm", se=F)
+```
+
+# Gene expression example
+
+Read the dataset from online
+
+The 'head()' function will print out just the first few rows (6 by default)
+```{r}
+url <- "https://bioboot.github.io/bimm143_S20/class-material/up_down_expression.txt"
+genes <- read.delim(url)
+head(genes,10)
+```
+
+```{r}
+nrow(genes)
+```
+
+```{r}
+colnames(genes)
+ncol(genes)
+```
+
+
+```{r}
+table(genes$State)
+round( table(genes$State)/nrow(genes)*100, 2 )
+```
+
+```{r}
+p <- ggplot(genes) +
+  aes(Condition1,Condition2, color=State) +
+  geom_point() +
+  scale_color_manual( values=c("blue", "grey", "red") )
+p
+```
+
+```{r}
+p + labs(title="Gene Expression Changes Upon Drug Treatment",
+       subtitle="Regulatory states", x="Control (no drug)", y="Drug Treatment")
+```
+
+Gapminder Dataset or Package Load
+I use the `install.package()` command along with the package name.
+```{r}
+library(gapminder)
+```
+
+dplyr code
+I use the `install.package()` command along with the package name.
+```{r}
+library(dplyr)
+```
+
+```{r}
+gapminder_2007 = gapminder %>% filter(year==2007)
+ggplot(gapminder_2007) +
+  aes(gdpPercap, lifeExp) +
+  geom_point()
+```
+
+```{r}
+gapminder_top5 = gapminder %>%
+  filter(year==2007) %>%
+  arrange(desc(pop)) %>%
+  top_n(5, pop)
+
+gapminder_top5
+```
+
+Barplots attempts
+
+These one showcases the `geom_col()` function.
+
+```{r}
+bp <- ggplot(gapminder_top5)
+  bp+geom_col(aes(x = country, y = pop, fill=continent))
+```
+
+```{r}
+bp + geom_col(aes(x = country, y = lifeExp, fill=lifeExp))
+```
+
+This experiments with ordering the columns.
+
+```{r}
+bp + aes( x=reorder(country,-pop), y=pop, fill=gdpPercap ) +
+  geom_col()
+```
+
+```{r}
+bp + aes( x=reorder(country,-pop), y=pop, fill=country ) +
+  geom_col(col="gray30") +
+  guides(fill="none")
+```
+
+Flipping barplots
+
+```{r}
+head(USArrests)
+USArrests$State <- rownames(USArrests)
+ggplot(USArrests) +
+  aes(x=reorder(State,Murder), y=Murder) +
+  geom_point() +
+  geom_segment(aes(x=State, xend=State, y=0, yend=Murder), color="blue") +
+  coord_flip()
+```
+
+
+I write some text I want **bold** or *italic*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
