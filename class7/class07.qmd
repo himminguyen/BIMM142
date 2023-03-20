@@ -1,7 +1,7 @@
 ---
 title: "Class 7"
 author: "Jimmi Nguyen"
-format: pdf
+format: gfm
 ---
 
 ```{r}

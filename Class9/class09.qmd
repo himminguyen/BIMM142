@@ -1,7 +1,7 @@
 ---
 title: "Class 09: PDB Database"
 author: "Jimmi Nguyen"
-format: pdf
+format: gfm
 ---
 # What is in the PDB anyways?
 
