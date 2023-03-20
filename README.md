@@ -1,6 +1,6 @@
 # BIMM143 Bioinformatics Lab
 
-This is my repository for my Bioinformatics class from UC San Deigo 2023
+This is my repository for my [BIMM 143](https://bioboot.github.io/bimm143_W23/) class from UC San Deigo 2023
 
 ## Index of Material
 
